@@ -1,0 +1,32 @@
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+.map-container {
+    background: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+#cityMap {
+    display: block;
+    width: 100%;
+    height: auto;
+    min-height: 350px;
+}
+
+select {
+    color: white;
+    cursor: pointer;
+}
+
+button {
+    cursor: pointer;
+}
+
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}

@@ -1,0 +1,320 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Emergency Vehicle Route Finder</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body class="bg-slate-950 text-white min-h-screen">
+
+    <div class="flex min-h-screen">
+
+        <!-- Sidebar -->
+        <aside class="w-64 bg-slate-900 p-6 hidden md:block">
+
+            <h1 class="text-xl font-bold text-blue-400 mb-10">
+                <i class="fa-solid fa-truck-medical mr-2"></i>
+                Emergency Finder
+            </h1>
+
+            <nav class="space-y-5">
+
+                <a href="#" class="block text-blue-400">
+                    <i class="fa-solid fa-house mr-3"></i> Dashboard
+                </a>
+
+                <a href="#routePlanner" class="block text-gray-400 hover:text-white">
+                    <i class="fa-solid fa-route mr-3"></i> Route Planner
+                </a>
+
+                <a href="#mapSection" class="block text-gray-400 hover:text-white">
+                    <i class="fa-solid fa-map mr-3"></i> City Map
+                </a>
+
+            </nav>
+
+            <div class="mt-20 p-4 bg-slate-800 rounded-xl">
+                <p class="text-sm text-gray-400">Algorithm Status</p>
+                <p class="text-green-400 font-semibold mt-2">
+                    <i class="fa-solid fa-circle-check mr-2"></i>
+                    Dijkstra Active
+                </p>
+            </div>
+
+        </aside>
+
+
+        <!-- Main Content -->
+        <main class="flex-1 p-5 md:p-8">
+
+            <!-- Header -->
+            <header class="flex justify-between items-center mb-8">
+
+                <div>
+                    <h2 class="text-3xl font-bold">
+                        Emergency Dashboard
+                    </h2>
+
+                    <p class="text-gray-400 mt-2">
+                        Smart shortest route navigation system
+                    </p>
+                </div>
+
+                <div class="bg-slate-800 px-4 py-3 rounded-xl">
+                    <span class="text-green-400">
+                        <i class="fa-solid fa-circle mr-2"></i>
+                        System Online
+                    </span>
+                </div>
+
+            </header>
+
+
+            <!-- Statistics -->
+            <section class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
+
+                <div class="bg-slate-900 p-6 rounded-2xl">
+                    <i class="fa-solid fa-location-dot text-blue-400 text-2xl"></i>
+                    <h3 class="text-3xl font-bold mt-3">10</h3>
+                    <p class="text-gray-400">City Locations</p>
+                </div>
+
+                <div class="bg-slate-900 p-6 rounded-2xl">
+                    <i class="fa-solid fa-road text-green-400 text-2xl"></i>
+                    <h3 class="text-3xl font-bold mt-3">17</h3>
+                    <p class="text-gray-400">Road Connections</p>
+                </div>
+
+                <div class="bg-slate-900 p-6 rounded-2xl">
+                    <i class="fa-solid fa-brain text-purple-400 text-2xl"></i>
+                    <h3 class="text-3xl font-bold mt-3">Dijkstra</h3>
+                    <p class="text-gray-400">Active Algorithm</p>
+                </div>
+
+            </section>
+
+
+            <!-- Route Planner -->
+            <section id="routePlanner"
+            class="bg-slate-900 p-6 rounded-2xl mb-8">
+
+                <h3 class="text-xl font-bold mb-6">
+                    <i class="fa-solid fa-route text-blue-400 mr-2"></i>
+                    Find Emergency Route
+                </h3>
+
+                <form id="routeForm"
+                class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+                    <div>
+                        <label class="block mb-2 text-gray-400">
+                            Starting Location
+                        </label>
+
+                        <select id="startLocation"
+                        class="w-full bg-slate-800 p-4 rounded-xl outline-none">
+
+                            <option value="A">City Hospital</option>
+                            <option value="B">Railway Station</option>
+                            <option value="C">Bus Stand</option>
+                            <option value="D">City Center</option>
+                            <option value="E">Police Station</option>
+                            <option value="F">Fire Station</option>
+                            <option value="G">Airport</option>
+                            <option value="H">University</option>
+                            <option value="I">Market</option>
+                            <option value="J">Emergency Center</option>
+
+                        </select>
+                    </div>
+
+
+                    <div>
+                        <label class="block mb-2 text-gray-400">
+                            Destination
+                        </label>
+
+                        <select id="endLocation"
+                        class="w-full bg-slate-800 p-4 rounded-xl outline-none">
+
+                            <option value="J">Emergency Center</option>
+                            <option value="A">City Hospital</option>
+                            <option value="B">Railway Station</option>
+                            <option value="C">Bus Stand</option>
+                            <option value="D">City Center</option>
+                            <option value="E">Police Station</option>
+                            <option value="F">Fire Station</option>
+                            <option value="G">Airport</option>
+                            <option value="H">University</option>
+                            <option value="I">Market</option>
+
+                        </select>
+                    </div>
+
+
+                    <div>
+                        <label class="block mb-2 text-gray-400">
+                            Emergency Vehicle
+                        </label>
+
+                        <select id="vehicleType"
+                        class="w-full bg-slate-800 p-4 rounded-xl outline-none">
+
+                            <option value="Ambulance">Ambulance</option>
+                            <option value="Fire Brigade">Fire Brigade</option>
+                            <option value="Police Vehicle">Police Vehicle</option>
+
+                        </select>
+                    </div>
+
+
+                    <div class="flex items-end">
+
+                        <button type="submit"
+                        id="findRouteBtn"
+                        class="w-full bg-blue-600 hover:bg-blue-700 p-4 rounded-xl font-bold transition">
+
+                            <i class="fa-solid fa-magnifying-glass-location mr-2"></i>
+                            Find Best Route
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+                <p id="errorMessage" class="text-red-400 mt-4"></p>
+
+            </section>
+
+
+            <!-- Route Results -->
+            <section id="resultSection"
+            class="hidden bg-slate-900 p-6 rounded-2xl mb-8">
+
+                <h3 class="text-xl font-bold mb-5">
+                    Shortest Route Results
+                </h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+
+                    <div class="bg-slate-800 p-5 rounded-xl">
+                        <p class="text-gray-400">Total Distance</p>
+                        <h2 id="distance" class="text-3xl font-bold text-blue-400 mt-2">
+                            0 KM
+                        </h2>
+                    </div>
+
+                    <div class="bg-slate-800 p-5 rounded-xl">
+                        <p class="text-gray-400">Estimated Time</p>
+                        <h2 id="estimatedTime" class="text-3xl font-bold text-green-400 mt-2">
+                            0 Min
+                        </h2>
+                    </div>
+
+                    <div class="bg-slate-800 p-5 rounded-xl">
+                        <p class="text-gray-400">Vehicle</p>
+                        <h2 id="selectedVehicle" class="text-xl font-bold text-purple-400 mt-3">
+                            Ambulance
+                        </h2>
+                    </div>
+
+                </div>
+
+                <div class="mt-6">
+                    <p class="text-gray-400 mb-3">Selected Route</p>
+
+                    <div id="routeNames"
+                    class="flex flex-wrap gap-3 text-blue-300 font-semibold">
+                    </div>
+                </div>
+
+            </section>
+
+
+            <!-- Custom City Map -->
+            <section id="mapSection"
+            class="bg-slate-900 p-6 rounded-2xl">
+
+                <div class="flex justify-between items-center mb-5">
+
+                    <div>
+                        <h3 class="text-xl font-bold">
+                            Custom City Map
+                        </h3>
+
+                        <p class="text-gray-400 text-sm mt-1">
+                            Interactive road network visualization
+                        </p>
+                    </div>
+
+                    <span class="text-green-400 text-sm">
+                        <i class="fa-solid fa-circle mr-1"></i>
+                        10 Locations
+                    </span>
+
+                </div>
+
+                <div class="map-container">
+
+                    <svg id="cityMap"
+                    viewBox="0 0 1100 600"
+                    class="w-full">
+
+                        <g id="roads"></g>
+
+                        <g id="routeLines"></g>
+
+                        <g id="mapNodes"></g>
+
+                    </svg>
+
+                </div>
+
+                <div class="flex flex-wrap gap-5 mt-5 text-sm text-gray-400">
+
+                    <span>
+                        <i class="fa-solid fa-circle text-blue-400 mr-2"></i>
+                        Location
+                    </span>
+
+                    <span>
+                        <i class="fa-solid fa-minus text-gray-500 mr-2"></i>
+                        Road
+                    </span>
+
+                    <span>
+                        <i class="fa-solid fa-minus text-green-400 mr-2"></i>
+                        Shortest Route
+                    </span>
+
+                </div>
+
+            </section>
+
+
+            <footer class="text-center text-gray-500 mt-8 text-sm">
+                Emergency Vehicle Route Finder | DAA Project
+                <br>
+                Powered by Dijkstra's Shortest Path Algorithm
+            </footer>
+
+        </main>
+
+    </div>
+
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+</body>
+</html>
